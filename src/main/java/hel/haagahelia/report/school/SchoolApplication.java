@@ -26,11 +26,11 @@ public class SchoolApplication {
 	private SubjectRepository subjectRepository;
 	@Autowired
 	private StudentRepository studentRepository;
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(SchoolApplication.class, args);
 	}
-	
+
 	@Bean
 	CommandLineRunner runner(){
 		return args -> {
@@ -52,6 +52,13 @@ public class SchoolApplication {
 			gradeRepository.save(grade2);
 			gradeRepository.save(grade3);
 			gradeRepository.save(grade4);
+
+			// username: kevin password: user
+			studentRepository.save(new Student("kevin",
+					"$2a$04$1.YhMIgNX/8TkCKGFUONWO1waedKhQ5KrnB30fl0Q01QKqmzLf.Zi","user@mail.com","USER"));
+			// username: ben password: admin
+			studentRepository.save(new Student("ben",
+					"$2a$04$KNLUwOWHVQZVpXyMBNc7JOzbLiBjb9Tk9bP7KNcPI12ICuvzXQQKG","admin@mail.com","ADMIN"));
 		};
 	}
 }

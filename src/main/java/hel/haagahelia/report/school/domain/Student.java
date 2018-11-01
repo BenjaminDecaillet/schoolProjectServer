@@ -22,17 +22,25 @@ public class Student {
 
 	@Column(nullable = false)
 	private String email;
-
+	
+	@Column(nullable = false)
+	private String role;
+	/**
+	 * Default constructor
+	 */
+	public Student() {}
 	/**
 	 * Constructor
 	 * @param username
 	 * @param password
 	 * @param email
+	 * @param role
 	 */
-	public Student(String username, String password, String email) {
+	public Student(String username, String password, String email, String role) {
 		this.username = username;
 		this.password = password;
 		this.email = email;
+		this.role = role;
 	}
 
 	/**
@@ -89,6 +97,20 @@ public class Student {
 	 */
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	/**
+	 * @return the role
+	 */
+	public String getRole() {
+		return role;
+	}
+
+	/**
+	 * @param role the role to set
+	 */
+	public void setRole(String role) {
+		this.role = role;
 	}
 	
 	
