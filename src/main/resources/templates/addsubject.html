@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Subject</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
+</head>
+<body>
+	<h1>Add Subject</h1>
+	<div class="container">
+		<form th:object="${subject}" th:action="@{savesubject}" action="#" method="post">
+		
+		<div class="form-group">
+				<label for="name">Name</label>
+				<input type="text" id="name" class="form-control" th:field="*{name}"/>
+			</div>
+
+			<input type="submit" value="Save" class="btn btn-success"></input>
+		</form>
+	</div>
+</body>
+</html>

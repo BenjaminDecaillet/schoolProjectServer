@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Subject</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{../css/bootstrap.min.css}" /> 
+</head>
+<body>
+	<h1>Edit Subject</h1>
+	<div class="container">
+		<form th:object="${subject}" th:action="@{../savesubject}" action="#" method="post">
+		
+			<input type="hidden" id="id" th:field="*{id}"/>
+			<div class="form-group">
+				<label for="name">Name</label>
+				<input type="text" id="name" class="form-control" th:field="*{name}"/>
+			</div>			
+			<input type="submit" class="btn btn-primary" value="Save"/>
+		</form>
+		<div>
+			<table class="table table-striped">
+			<tr>
+				<th>Name</th>
+				<th>N° Grades</th>
+				<th>Average</th>
+				<th></th>
+				<th></th>
+			</tr>
+			<tr th:each="grade : ${grades}">
+				<td th:text="${grade.name}">Name...</td>
+				<td th:text="${grade.value}">Value...</td>
+				<td th:text="${grade.weight}">weight...</td>
+				<td><a class="btn btn-danger"
+					th:href="@{/deletegrade/{id}(id=${grade.id})}">Delete</a></td>
+				<td><a class="btn btn-warning"
+					th:href="@{/editgrade/{id}(id=${grade.id})}">Edit</a></td>
+			</tr>
+			<tr>
+				<td>
+					<a class="btn btn-success"
+					th:href="@{/addgrade/{id}(id=${id})}">Add Grade</a>
+				</td>
+			</tr>
+			
+		</table>
+		</div>
+	</div>
+</body>
+</html>
