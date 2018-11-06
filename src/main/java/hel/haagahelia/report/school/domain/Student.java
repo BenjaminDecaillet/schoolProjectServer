@@ -1,10 +1,15 @@
 package hel.haagahelia.report.school.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Student {
@@ -25,6 +30,9 @@ public class Student {
 	
 	@Column(nullable = false)
 	private String role;
+	
+	@OneToMany(cascade = CascadeType.ALL,mappedBy ="student")
+	private List<Subject> subjects;
 	/**
 	 * Default constructor
 	 */
@@ -41,6 +49,7 @@ public class Student {
 		this.password = password;
 		this.email = email;
 		this.role = role;
+		this.subjects = new ArrayList<Subject>();
 	}
 
 	/**
@@ -111,6 +120,18 @@ public class Student {
 	 */
 	public void setRole(String role) {
 		this.role = role;
+	}
+	/**
+	 * @return the subjects
+	 */
+	public List<Subject> getSubjects() {
+		return subjects;
+	}
+	/**
+	 * @param subjects the subjects to set
+	 */
+	public void setSubjects(List<Subject> subjects) {
+		this.subjects = subjects;
 	}
 	
 	

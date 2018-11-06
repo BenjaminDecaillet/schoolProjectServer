@@ -35,13 +35,18 @@ public class SchoolApplication {
 	CommandLineRunner runner(){
 		return args -> {
 			// Save demo data to database
-			// Add Grades objects and save these to db
+			// username: kevin password: user
+			Student student1 = new Student("kevin","$2a$04$1.YhMIgNX/8TkCKGFUONWO1waedKhQ5KrnB30fl0Q01QKqmzLf.Zi","user@mail.com","USER");
+			// username: ben password: admin
+			Student student2 = new Student("ben","$2a$04$KNLUwOWHVQZVpXyMBNc7JOzbLiBjb9Tk9bP7KNcPI12ICuvzXQQKG","admin@mail.com","USER");
+			studentRepository.save(student1);
+			studentRepository.save(student2);
 			Grade grade1 = new Grade("Mid Term exam",1,1);
 			Grade grade2 = new Grade("Final Exam",3,2);
 			Grade grade3 = new Grade("Mid Term exam",5,1);
 			Grade grade4 = new Grade("Final Exam",4,2);
-			Subject BI = new Subject("Business Intelligence");
-			Subject IT = new Subject("Informatique");
+			Subject BI = new Subject("Business Intelligence",student1);
+			Subject IT = new Subject("Informatique",student1);
 			subjectRepository.save(BI);
 			subjectRepository.save(IT);
 			grade1.setSubject(BI);
@@ -52,13 +57,23 @@ public class SchoolApplication {
 			gradeRepository.save(grade2);
 			gradeRepository.save(grade3);
 			gradeRepository.save(grade4);
+			Grade grade5 = new Grade("Mid Term exam",2,1);
+			Grade grade6 = new Grade("Final Exam",4,2);
+			Grade grade7 = new Grade("Mid Term exam",3,1);
+			Grade grade8 = new Grade("Final Exam",3,2);
+			Subject ECO = new Subject("Economy",student2);
+			Subject DB = new Subject("Database",student2);
+			subjectRepository.save(ECO);
+			subjectRepository.save(DB);
+			grade5.setSubject(ECO);
+			grade6.setSubject(ECO);
+			grade7.setSubject(DB);
+			grade8.setSubject(DB);
+			gradeRepository.save(grade5);
+			gradeRepository.save(grade6);
+			gradeRepository.save(grade7);
+			gradeRepository.save(grade8);
 
-			// username: kevin password: user
-			studentRepository.save(new Student("kevin",
-					"$2a$04$1.YhMIgNX/8TkCKGFUONWO1waedKhQ5KrnB30fl0Q01QKqmzLf.Zi","user@mail.com","USER"));
-			// username: ben password: admin
-			studentRepository.save(new Student("ben",
-					"$2a$04$KNLUwOWHVQZVpXyMBNc7JOzbLiBjb9Tk9bP7KNcPI12ICuvzXQQKG","admin@mail.com","ADMIN"));
 		};
 	}
 }

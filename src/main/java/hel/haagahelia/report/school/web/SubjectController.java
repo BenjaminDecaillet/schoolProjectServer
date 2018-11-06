@@ -1,6 +1,7 @@
 package hel.haagahelia.report.school.web;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import hel.haagahelia.report.school.domain.Grade;
 import hel.haagahelia.report.school.domain.GradeRepository;
+import hel.haagahelia.report.school.domain.Student;
+import hel.haagahelia.report.school.domain.StudentRepository;
 import hel.haagahelia.report.school.domain.Subject;
 import hel.haagahelia.report.school.domain.SubjectRepository;
 
@@ -25,30 +28,39 @@ public class SubjectController {
 	private SubjectRepository subjectRepository;
 	@Autowired 
 	private GradeRepository gradeRepository;
+	@Autowired 
+	private StudentRepository studentRepository;
+	
+	
 	/**
 	 * List of subjects with thymeleaf
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value = "/subjectlist")
-	public String subjectlist(Model model) {
-		List<Subject> subjects = (List<Subject>) subjectRepository.findAll();
+	public String subjectlist(Model model, Principal principal) {
+		String username = principal.getName();
+		Student connectedStudent = studentRepository.findByUsername(username);
+		List<Subject> subjects = (List<Subject>) subjectRepository.findByStudent(connectedStudent);
 		for (Subject subject : subjects) {
+//			System.out.println("************************");
+//			System.out.println(subject.getName());
 			List<Grade> gradesofSubject = subject.getGrades();
 			if(gradesofSubject.size()>0){
 				int size = 0;
 				int sum = 0;
 
 				for (Grade grade : gradesofSubject) {
-					sum = sum + grade.getValue();
+					sum = sum + (grade.getValue()*grade.getWeight());
 					size= size + grade.getWeight();
 				}
 				double avg =  (double) sum/(double) size;
 				subject.setAverage(avg);
 				subjectRepository.save(subject);
 			}
+//			System.out.println("************************");
 		}
-		model.addAttribute("subjects", (List<Subject>) subjectRepository.findAll());
+		model.addAttribute("subjects", (List<Subject>) subjectRepository.findByStudent(connectedStudent));
 		return "subjectlist";
 	}
 	/**
@@ -80,7 +92,10 @@ public class SubjectController {
 	 * @return
 	 */
 	@RequestMapping(value = "/savesubject", method = RequestMethod.POST)
-	public String savesubject(Subject subject) {
+	public String savesubject(Subject subject, Principal principal) {
+		String username = principal.getName();
+		Student connectedStudent = studentRepository.findByUsername(username);
+		subject.setStudent(connectedStudent);
 		subjectRepository.save(subject);
 		return "redirect:subjectlist";
 	}
