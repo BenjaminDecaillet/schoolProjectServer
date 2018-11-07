@@ -36,9 +36,9 @@ public class SchoolApplication {
 		return args -> {
 			// Save demo data to database
 			// username: kevin password: user
-			Student student1 = new Student("kevin","$2a$04$1.YhMIgNX/8TkCKGFUONWO1waedKhQ5KrnB30fl0Q01QKqmzLf.Zi","user@mail.com","USER");
+			Student student1 = new Student("kevin","$2a$04$1.YhMIgNX/8TkCKGFUONWO1waedKhQ5KrnB30fl0Q01QKqmzLf.Zi","kevin@mail.com","USER");
 			// username: ben password: admin
-			Student student2 = new Student("ben","$2a$04$KNLUwOWHVQZVpXyMBNc7JOzbLiBjb9Tk9bP7KNcPI12ICuvzXQQKG","admin@mail.com","USER");
+			Student student2 = new Student("ben","$2a$04$KNLUwOWHVQZVpXyMBNc7JOzbLiBjb9Tk9bP7KNcPI12ICuvzXQQKG","ben@mail.com","USER");
 			studentRepository.save(student1);
 			studentRepository.save(student2);
 			Grade grade1 = new Grade("Mid Term exam",1,1);
@@ -73,7 +73,6 @@ public class SchoolApplication {
 			gradeRepository.save(grade6);
 			gradeRepository.save(grade7);
 			gradeRepository.save(grade8);
-
 		};
 	}
 }

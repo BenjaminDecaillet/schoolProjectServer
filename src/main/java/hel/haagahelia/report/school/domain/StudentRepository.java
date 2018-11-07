@@ -1,11 +1,11 @@
 package hel.haagahelia.report.school.domain;
 
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.query.Param;
 
 
-@Repository
+
 public interface StudentRepository extends CrudRepository<Student, Long> {
 
-	Student findByUsername(String username);
+	Student findByUsername(@Param("username") String username);
 }

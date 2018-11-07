@@ -16,19 +16,15 @@ public class Student {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(nullable = false, updatable = false)
 	private Long id;
 
-	@Column(nullable = false, unique = true)
+	@Column(unique=true, nullable= false)
 	private String username;
-
-	@Column(nullable = false)
+	@Column(nullable= false)
 	private String password;
 
-	@Column(nullable = false)
 	private String email;
 	
-	@Column(nullable = false)
 	private String role;
 	
 	@OneToMany(cascade = CascadeType.ALL,mappedBy ="student")

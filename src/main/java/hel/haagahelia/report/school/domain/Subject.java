@@ -27,6 +27,7 @@ public class Subject {
 	private double average;
 	@OneToMany(cascade = CascadeType.ALL,mappedBy ="subject")
 	private List<Grade> grades;
+	
 	@ManyToOne
 	@JsonIgnore
 	@JoinColumn(name="studentid")
