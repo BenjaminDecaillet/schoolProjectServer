@@ -1,5 +1,6 @@
 package hel.haagahelia.report.school.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  *
  */
 @Entity
-@Table(name = "grade")
 public class Grade {
 
 	/**
@@ -24,6 +24,7 @@ public class Grade {
 	 */
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="gradeid")
 	private long id;
 	/**
 	 * Name of the grade

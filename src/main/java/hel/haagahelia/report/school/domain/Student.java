@@ -13,11 +13,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "student")
 public class Student {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="studentid")
 	private Long id;
 
 	@Column(unique=true, nullable= false)

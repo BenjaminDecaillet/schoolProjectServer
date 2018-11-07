@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,12 +18,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
-
-@Table(name = "subject")
 public class Subject {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="subjectid")
 	private long id;
 	
 	private String name;
