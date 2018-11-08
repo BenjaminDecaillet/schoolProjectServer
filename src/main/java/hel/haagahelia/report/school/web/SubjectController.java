@@ -137,7 +137,7 @@ public class SubjectController {
 	 * Get subjects of student by it's id
 	 * @return json list of subjects
 	 */
-	@RequestMapping(value = "/subjectofStudent/{studentid}", method = RequestMethod.GET)
+	@RequestMapping(value = "/subjectsOfStudent/{studentid}", method = RequestMethod.GET)
 	public @ResponseBody List<Subject> findSubjectsOfStudent(@PathVariable("studentid") Long studentid) {
 		return  subjectRepository.findByStudent(studentRepository.findById(studentid).get());
 	}
