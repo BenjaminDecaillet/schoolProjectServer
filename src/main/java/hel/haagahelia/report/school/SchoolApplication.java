@@ -1,7 +1,5 @@
 package hel.haagahelia.report.school;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -18,8 +16,6 @@ import hel.haagahelia.report.school.domain.SubjectRepository;
 
 @SpringBootApplication
 public class SchoolApplication {
-
-	private static final Logger log = LoggerFactory.getLogger(SchoolApplication.class);
 	@Autowired 
 	private GradeRepository gradeRepository;
 	@Autowired

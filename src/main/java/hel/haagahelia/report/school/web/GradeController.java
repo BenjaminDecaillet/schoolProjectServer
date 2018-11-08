@@ -16,7 +16,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import hel.haagahelia.report.school.domain.Grade;
 import hel.haagahelia.report.school.domain.GradeRepository;
-import hel.haagahelia.report.school.domain.Subject;
 import hel.haagahelia.report.school.domain.SubjectRepository;
 
 @Controller
@@ -81,7 +80,7 @@ public class GradeController {
 	 * Get all the grades 
 	 * @return json List of grades
 	 */
-	@RequestMapping(value = "/grades", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/grades", method = RequestMethod.GET)
 	public @ResponseBody List<Grade> grades() {
 		return (List<Grade>) gradeRepository.findAll();
 	}
@@ -89,7 +88,7 @@ public class GradeController {
 	 * Get a grade by it's id
 	 * @return json of a grade
 	 */
-	@RequestMapping(value = "/grade/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/grade/{id}", method = RequestMethod.GET)
 	public @ResponseBody Grade findbyId(@PathVariable("id") Long id) {
 		return  gradeRepository.findById(id).get();
 	}
@@ -97,7 +96,7 @@ public class GradeController {
 	 * Get grades of subject by it's id
 	 * @return json list of grades
 	 */
-	@RequestMapping(value = "/gradesOfSubject/{subjectid}", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/gradesOfSubject/{subjectid}", method = RequestMethod.GET)
 	public @ResponseBody List<Grade> findSubjectsOfStudent(@PathVariable("subjectid") Long subjectid) {
 		return  gradeRepository.findBySubject(subjectRepository.findById(subjectid).get());
 	}
@@ -105,7 +104,7 @@ public class GradeController {
 	 * Delete a grade by it's id
 	 * @return string on successful delete
 	 */
-	@RequestMapping(value = "/grade/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/api/grade/{id}", method = RequestMethod.DELETE)
 	public String delete(@PathVariable("id") Long id) {
 		gradeRepository.deleteById(id);
 		return "Grade with id "+id+" has been removed";
@@ -115,7 +114,7 @@ public class GradeController {
 	 * @param grade
 	 * @return
 	 */
-	@RequestMapping(value = "/grade", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/grade", method = RequestMethod.POST)
 	public ResponseEntity<Object> save(@RequestBody Grade grade) {
 		Grade savedGrade = gradeRepository.save(grade);
 

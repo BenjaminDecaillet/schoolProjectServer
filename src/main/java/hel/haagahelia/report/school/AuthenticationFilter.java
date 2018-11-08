@@ -14,8 +14,6 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import hel.haagahelia.report.school.service.AuthenticationService;
 
-
-
 public class AuthenticationFilter extends GenericFilterBean {
 	@Override
 	public void doFilter(ServletRequest request,

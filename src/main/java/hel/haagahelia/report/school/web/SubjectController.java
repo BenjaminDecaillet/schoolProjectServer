@@ -121,7 +121,7 @@ public class SubjectController {
 	 * Get all the subjects 
 	 * @return json List of subjects
 	 */
-	@RequestMapping(value = "/subjects", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/subjects", method = RequestMethod.GET)
 	public @ResponseBody List<Subject> subjects() {
 		return (List<Subject>) subjectRepository.findAll();
 	}
@@ -129,7 +129,7 @@ public class SubjectController {
 	 * Get a subject by it's id
 	 * @return json of a subject
 	 */
-	@RequestMapping(value = "/subject/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/subject/{id}", method = RequestMethod.GET)
 	public @ResponseBody Subject findbyId(@PathVariable("id") Long id) {
 		return  subjectRepository.findById(id).get();
 	}
@@ -137,7 +137,7 @@ public class SubjectController {
 	 * Get subjects of student by it's id
 	 * @return json list of subjects
 	 */
-	@RequestMapping(value = "/subjectsOfStudent/{studentid}", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/subjectsOfStudent/{studentid}", method = RequestMethod.GET)
 	public @ResponseBody List<Subject> findSubjectsOfStudent(@PathVariable("studentid") Long studentid) {
 		return  subjectRepository.findByStudent(studentRepository.findById(studentid).get());
 	}
@@ -145,7 +145,7 @@ public class SubjectController {
 	 * Delete a subject by it's id
 	 * @return string on successful delete
 	 */
-	@RequestMapping(value = "/subject/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/api/subject/{id}", method = RequestMethod.DELETE)
 	public String delete(@PathVariable("id") Long id) {
 		subjectRepository.deleteById(id);
 		return "Subject with id "+id+" has been removed";
@@ -155,7 +155,7 @@ public class SubjectController {
 	 * @param subject
 	 * @return
 	 */
-	@RequestMapping(value = "/subject", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/subject", method = RequestMethod.POST)
 	public ResponseEntity<Object> save(@RequestBody Subject subject) {
 		Subject savedsubject = subjectRepository.save(subject);
 

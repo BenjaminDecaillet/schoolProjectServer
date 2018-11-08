@@ -16,7 +16,6 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import hel.haagahelia.report.school.domain.AccountCredentials;
 import hel.haagahelia.report.school.service.AuthenticationService;
 
