@@ -4,8 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
@@ -22,6 +24,7 @@ import hel.haagahelia.report.school.domain.SubjectRepository;
 
 @RunWith(SpringRunner.class)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @DataJpaTest
 public class SchoolRepositoryTests {
 
@@ -35,61 +38,57 @@ public class SchoolRepositoryTests {
 	private SubjectRepository subjectRepository;
 	
 	@Test
-	public void saveStudent() {
+	public void t1_saveStudent() {
 		Student student = new Student("test","$2a$04$KNLUwOWHVQZVpXyMBNc7JOzbLiBjb9Tk9bP7KNcPI12ICuvzXQQKG","ben@mail.com","ADMIN");
 		entityManager.persistAndFlush(student);
 		assertThat(student.getId()).isNotNull();
 	}
 	@Test
-	public void saveSubject() {
+	public void t2_saveSubject() {
 		Subject subject = new Subject("Business Intelligence");
 		entityManager.persistAndFlush(subject);
 		assertThat(subject.getId()).isNotNull();
 	}
 	@Test
-	public void saveGrade() {
+	public void t3_saveGrade() {
 		Grade grade = new Grade("Mid Term exam",1,1);
 		entityManager.persistAndFlush(grade);
 		assertThat(grade.getId()).isNotNull();
 	}
 	@Test
-	public void deleteStudent() {
-		entityManager.persistAndFlush(new Student("test","$2a$04$KNLUwOWHVQZVpXyMBNc7JOzbLiBjb9Tk9bP7KNcPI12ICuvzXQQKG","admin@mail.com","USER"));
-		entityManager.persistAndFlush(new Student("test 2","$2a$04$1.YhMIgNX/8TkCKGFUONWO1waedKhQ5KrnB30fl0Q01QKqmzLf.Zi","user@mail.com","USER"));
+	public void t4_findStudentByUsername() {
+		Student john = new Student("john","$2a$04$KNLUwOWHVQZVpXyMBNc7JOzbLiBjb9Tk9bP7KNcPI12ICuvzXQQKG","admin@mail.com","USER");
+		entityManager.persistAndFlush(john);
+		assertThat(studentRepository.findByUsername("john").getId())
+		.isEqualTo(john.getId())
+		.isNotNull();
+	}
+	@Test
+	public void t5_findSubjectsByStudent() {
+		Student student = studentRepository.findByUsername("ben");
+		assertThat(subjectRepository.findByStudent(student).get(0)).isNotNull();
+	}
+	@Test
+	public void t6_findGradeBySubject() {
+		Student student = studentRepository.findByUsername("ben");
+		List<Subject> subjects = subjectRepository.findByStudent(student);
+		Subject subject = subjects.get(0);
+		assertThat(gradeRepository.findBySubject(subject).get(0)).isNotNull();
+	}
+	@Test
+	public void t7_deleteStudent() {
 		studentRepository.deleteAll();
 		assertThat(studentRepository.findAll()).isEmpty();
 	}
 	@Test
-	public void deleteSubject() {
-		entityManager.persistAndFlush(new Subject("Business Intelligence"));
-		entityManager.persistAndFlush(new Subject("Server Programming"));
+	public void t8_deleteSubject() {
 		subjectRepository.deleteAll();
 		assertThat(subjectRepository.findAll()).isEmpty();
 	}
 	@Test
-	public void deleteGrade() {
-		entityManager.persistAndFlush(new Grade("Mid Term exam",1,1));
-		entityManager.persistAndFlush(new Grade("Fianl exam",2,2));
+	public void t9_deleteGrade() {
 		gradeRepository.deleteAll();
 		assertThat(gradeRepository.findAll()).isEmpty();
-	}
-	@Test
-	public void findStudentByUsername() {
-		entityManager.persistAndFlush(new Student("john","$2a$04$KNLUwOWHVQZVpXyMBNc7JOzbLiBjb9Tk9bP7KNcPI12ICuvzXQQKG","admin@mail.com","USER"));
-		entityManager.persistAndFlush(new Student("thomas","$2a$04$1.YhMIgNX/8TkCKGFUONWO1waedKhQ5KrnB30fl0Q01QKqmzLf.Zi","user@mail.com","USER"));
-		assertThat(studentRepository.findByUsername("john").getId()).isNotNull();
-	}
-	@Test
-	public void findSubjectsByStudent() {
-		Student student = studentRepository.findByUsername("ben");
-		assertThat(subjectRepository.findByStudent(student)).isNotNull();
-	}
-	@Test
-	public void findGradeBySubjectt() {
-		Student student = studentRepository.findByUsername("ben");
-		List<Subject> subjects = subjectRepository.findByStudent(student);
-		Subject subject = subjects.get(0);
-		assertThat(gradeRepository.findBySubject(subject)).isNotNull();
 	}
 	
 	
