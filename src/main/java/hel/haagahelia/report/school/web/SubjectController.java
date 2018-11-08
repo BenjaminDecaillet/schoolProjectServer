@@ -134,6 +134,14 @@ public class SubjectController {
 		return  subjectRepository.findById(id).get();
 	}
 	/**
+	 * Get subjects of student by it's id
+	 * @return json list of subjects
+	 */
+	@RequestMapping(value = "/subjectofStudent/{studentid}", method = RequestMethod.GET)
+	public @ResponseBody List<Subject> findSubjectsOfStudent(@PathVariable("studentid") Long studentid) {
+		return  subjectRepository.findByStudent(studentRepository.findById(studentid).get());
+	}
+	/**
 	 * Delete a subject by it's id
 	 * @return string on successful delete
 	 */

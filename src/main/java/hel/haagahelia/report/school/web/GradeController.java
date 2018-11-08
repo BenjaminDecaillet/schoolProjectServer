@@ -94,6 +94,14 @@ public class GradeController {
 		return  gradeRepository.findById(id).get();
 	}
 	/**
+	 * Get grades of subject by it's id
+	 * @return json list of grades
+	 */
+	@RequestMapping(value = "/gradesOfSubject/{subjectid}", method = RequestMethod.GET)
+	public @ResponseBody List<Grade> findSubjectsOfStudent(@PathVariable("subjectid") Long subjectid) {
+		return  gradeRepository.findBySubject(subjectRepository.findById(subjectid).get());
+	}
+	/**
 	 * Delete a grade by it's id
 	 * @return string on successful delete
 	 */
