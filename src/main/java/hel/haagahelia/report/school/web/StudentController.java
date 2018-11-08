@@ -39,7 +39,7 @@ public class StudentController {
 	 * @return json List of students
 	 */
 	@RequestMapping(value = "/api/students", method = RequestMethod.GET)
-	public Iterable<Student> getStudents() {
+	public @ResponseBody Iterable<Student> getStudents() {
 		return studentRepository.findAll();
 	}
 	/**
@@ -57,7 +57,7 @@ public class StudentController {
 	@RequestMapping(value = "/api/student/{id}", method = RequestMethod.DELETE)
 	public String delete(@PathVariable("id") Long id) {
 		studentRepository.deleteById(id);
-		return "Student with id "+id+" has been removed";
+		return "{\"message\":\"Student with id "+id+" has been removed\"}";
 	}
 	/**
 	 * Save a student to the repository
