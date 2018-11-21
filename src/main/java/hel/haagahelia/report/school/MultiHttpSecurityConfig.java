@@ -35,19 +35,25 @@ public class MultiHttpSecurityConfig {
 		}
 		
 		protected void configure(HttpSecurity http) throws Exception {
+			//Testing purposes
 			http
 			.antMatcher("/api/**")
-			.csrf().disable().cors().and().authorizeRequests()
-			.antMatchers(HttpMethod.POST, "/api/login").permitAll()
-			.anyRequest().authenticated()
-			.and()
-			// Filter for the api/login requests
-			.addFilterBefore(new LoginFilter("/api/login",
-					authenticationManager()),
-					UsernamePasswordAuthenticationFilter.class)
-			// Filter for other requests to check JWT in header
-			.addFilterBefore(new AuthenticationFilter(),
-					UsernamePasswordAuthenticationFilter.class);
+			.csrf().disable().cors().and().authorizeRequests().anyRequest().permitAll();
+			
+
+//			http
+//			.antMatcher("/api/**")
+//			.csrf().disable().cors().and().authorizeRequests()
+//			.antMatchers(HttpMethod.POST, "/api/login").permitAll()
+//			.anyRequest().authenticated()
+//			.and()
+//			// Filter for the api/login requests
+//			.addFilterBefore(new LoginFilter("/api/login",
+//					authenticationManager()),
+//					UsernamePasswordAuthenticationFilter.class)
+//			// Filter for other requests to check JWT in header
+//			.addFilterBefore(new AuthenticationFilter(),
+//					UsernamePasswordAuthenticationFilter.class);
 		}
 	}
 
