@@ -33,17 +33,16 @@ public class MultiHttpSecurityConfig {
 			auth.userDetailsService(studentDetailsService)
 			.passwordEncoder(new BCryptPasswordEncoder());
 		}
-		
+
 		protected void configure(HttpSecurity http) throws Exception {
 			//Testing purposes
-//			http
-//			.antMatcher("/api/**")
-//			.csrf().disable().cors().and().authorizeRequests().anyRequest().permitAll();
-			
+			//			http
+			//			.antMatcher("/api/**")
+			//			.csrf().disable().cors().and().authorizeRequests().anyRequest().permitAll();
 
 			http
-			.antMatcher("/api/**")
-			.csrf().disable().cors().and().authorizeRequests()
+			.antMatcher("/api/**").csrf().disable().cors()
+			.and().authorizeRequests()
 			.antMatchers(HttpMethod.POST, "/api/login").permitAll()
 			.anyRequest().authenticated()
 			.and()
@@ -54,6 +53,20 @@ public class MultiHttpSecurityConfig {
 			// Filter for other requests to check JWT in header
 			.addFilterBefore(new AuthenticationFilter(),
 					UsernamePasswordAuthenticationFilter.class);
+		}
+		
+		@Bean
+		CorsConfigurationSource corsConfigurationSource() {
+			UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+			CorsConfiguration config = new CorsConfiguration();
+			config.setAllowedOrigins(Arrays.asList("*"));
+			config.setAllowedMethods(Arrays.asList("*"));
+			config.setAllowedHeaders(Arrays.asList("*"));
+			config.setAllowCredentials(true);
+			config.applyPermitDefaultValues();
+
+			source.registerCorsConfiguration("/api/**", config);
+			return source;
 		}
 	}
 
@@ -86,19 +99,5 @@ public class MultiHttpSecurityConfig {
 			.permitAll();
 		}
 	}
-	
-	@Bean
-	CorsConfigurationSource corsConfigurationSource() {
-		UrlBasedCorsConfigurationSource source = 
-				new UrlBasedCorsConfigurationSource();
-		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowedOrigins(Arrays.asList("*"));
-		config.setAllowedMethods(Arrays.asList("*"));
-		config.setAllowedHeaders(Arrays.asList("*"));
-		config.setAllowCredentials(true);
-		config.applyPermitDefaultValues();
 
-		source.registerCorsConfiguration("/**", config);
-		return source;
-	}
 }
