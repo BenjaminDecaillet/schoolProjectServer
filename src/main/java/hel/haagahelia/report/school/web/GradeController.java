@@ -3,6 +3,8 @@ package hel.haagahelia.report.school.web;
 import java.net.URI;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import hel.haagahelia.report.school.domain.Grade;
 import hel.haagahelia.report.school.domain.GradeRepository;
+import hel.haagahelia.report.school.domain.Subject;
 import hel.haagahelia.report.school.domain.SubjectRepository;
 
 @Controller
@@ -112,12 +115,47 @@ public class GradeController {
 	/**
 	 * Save a grade to the repository
 	 * @param grade
-	 * @return
+	 * @return String
+	 * @throws JSONException
 	 */
 	@RequestMapping(value = "/api/grade", method = RequestMethod.POST)
-	public ResponseEntity<Object> save(@RequestBody Grade grade) {
+	public @ResponseBody Grade save(@RequestBody String jsonGrade) {
+		JSONObject jsonObj;
+		Grade grade =  new Grade();
+		try {
+			jsonObj = new JSONObject(jsonGrade);
+			grade.setName(jsonObj.getString("name"));
+			grade.setValue(jsonObj.getInt("value"));
+			grade.setWeight(jsonObj.getInt("weight"));
+			grade.setSubject(subjectRepository.findById(new Long(jsonObj.getInt("subjectid"))).get());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		Grade savedGrade = gradeRepository.save(grade);
 
+		return gradeRepository.findById(savedGrade.getId()).get();
+	}
+	/**
+	 * Update a grade to the repository
+	 * @param json String of a grade
+	 * @return 
+	 * @throws JSONException
+	 */
+	@RequestMapping(value = "/api/grade", method = RequestMethod.PUT)
+	public ResponseEntity<Object> update(@RequestBody String jsonGrade) {
+		JSONObject jsonObj;
+		Grade grade = null;
+		try {
+			jsonObj = new JSONObject(jsonGrade);
+			grade =  gradeRepository.findById(new Long(jsonObj.getInt("gradeid"))).get();
+			grade.setName(jsonObj.getString("name"));
+			grade.setValue(jsonObj.getInt("value"));
+			grade.setWeight(jsonObj.getInt("weight"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Grade savedGrade = gradeRepository.save(grade);
+		
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(savedGrade.getId()).toUri();
 

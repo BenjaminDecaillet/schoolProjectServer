@@ -2,8 +2,11 @@ package hel.haagahelia.report.school.web;
 
 import java.net.URI;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -30,8 +33,8 @@ public class SubjectController {
 	private GradeRepository gradeRepository;
 	@Autowired 
 	private StudentRepository studentRepository;
-	
-	
+
+
 	/**
 	 * List of subjects with thymeleaf
 	 * @param model
@@ -43,8 +46,8 @@ public class SubjectController {
 		Student connectedStudent = studentRepository.findByUsername(username);
 		List<Subject> subjects = (List<Subject>) subjectRepository.findByStudent(connectedStudent);
 		for (Subject subject : subjects) {
-//			System.out.println("************************");
-//			System.out.println(subject.getName());
+			//			System.out.println("************************");
+			//			System.out.println(subject.getName());
 			List<Grade> gradesofSubject = subject.getGrades();
 			if(gradesofSubject.size()>0){
 				int size = 0;
@@ -58,7 +61,7 @@ public class SubjectController {
 				subject.setAverage(avg);
 				subjectRepository.save(subject);
 			}
-//			System.out.println("************************");
+			//			System.out.println("************************");
 		}
 		model.addAttribute("subjects", (List<Subject>) subjectRepository.findByStudent(connectedStudent));
 		return "subjectlist";
@@ -154,13 +157,48 @@ public class SubjectController {
 	 * Save a subject to the repository
 	 * @param subject
 	 * @return
+	 * @throws JSONException 
 	 */
 	@RequestMapping(value = "/api/subject", method = RequestMethod.POST)
-	public ResponseEntity<Object> save(@RequestBody Subject subject) {
-		Subject savedsubject = subjectRepository.save(subject);
-
+	public @ResponseBody Subject save(@RequestBody String jsonSubject) {
+		JSONObject jsonObj;
+		Subject subject =  new Subject();
+		try {
+			jsonObj = new JSONObject(jsonSubject);
+			subject.setAverage(jsonObj.getDouble("average"));
+			subject.setName(jsonObj.getString("name"));
+			subject.setStudent(studentRepository.findById(new Long(jsonObj.getInt("studentid"))).get());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Subject savedSubject = subjectRepository.save(subject);
+		savedSubject.setGrades(new ArrayList<Grade>());
+		subjectRepository.save(savedSubject);
+		return subjectRepository.findById(savedSubject.getId()).get();
+	}
+	/**
+	 * Save a subject to the repository
+	 * @param subject
+	 * @return
+	 * @throws JSONException 
+	 */
+	@RequestMapping(value = "/api/subject", method = RequestMethod.PUT)
+	public ResponseEntity<Object> update(@RequestBody String jsonSubject) {
+		JSONObject jsonObj;
+		Subject subject =  null;
+		try {
+			jsonObj = new JSONObject(jsonSubject);
+			subject = subjectRepository.findById(new Long(jsonObj.getInt("subjectid"))).get();
+			subject.setName(jsonObj.getString("name"));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Subject savedSubject = subjectRepository.save(subject);
+		
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(savedsubject.getId()).toUri();
+				.buildAndExpand(savedSubject.getId()).toUri();
 
 		return ResponseEntity.created(location).build();
 	}

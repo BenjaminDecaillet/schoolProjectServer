@@ -130,5 +130,13 @@ public class Subject {
 	public void setStudent(Student student) {
 		this.student = student;
 	}
-		
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "id :" + id +"\n" +
+		"name" + name +"\n" +
+		"average : " + average +"\n" +
+		"student :" + student +"\n";
+	}
 }

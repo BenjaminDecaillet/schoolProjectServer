@@ -1,7 +1,9 @@
 package hel.haagahelia.report.school.web;
 
 import java.net.URI;
+import java.util.ArrayList;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -10,10 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import hel.haagahelia.report.school.domain.Student;
 import hel.haagahelia.report.school.domain.StudentRepository;
+import hel.haagahelia.report.school.domain.Subject;
 
 @Controller
 public class StudentController {
@@ -62,16 +63,26 @@ public class StudentController {
 	/**
 	 * Save a student to the repository
 	 * @param student
-	 * @return
+	 * @return Student
 	 */
 	@RequestMapping(value = "/api/student", method = RequestMethod.POST)
-	public ResponseEntity<Object> save(@RequestBody Student student) {
+	public @ResponseBody Student save(@RequestBody String jsonStudent) {
+		JSONObject jsonObj;
+		Student student =  new Student();
+		try {
+			jsonObj = new JSONObject(jsonStudent);
+			student.setUsername(jsonObj.getString("username"));
+			student.setPassword(jsonObj.getString("password"));
+			student.setEmail(jsonObj.getString("email"));
+			student.setRole(jsonObj.getString("role"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		Student savedstudent = studentRepository.save(student);
+		savedstudent.setSubjects(new ArrayList<Subject>());
+		studentRepository.save(savedstudent);
 
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(savedstudent.getId()).toUri();
-
-		return ResponseEntity.created(location).build();
+		return studentRepository.findById(savedstudent.getId()).get();
 	}
 
 }
