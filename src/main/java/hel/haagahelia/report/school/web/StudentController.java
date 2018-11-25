@@ -52,6 +52,14 @@ public class StudentController {
 		return  studentRepository.findById(id).get();
 	}
 	/**
+	 * Get a student by it's username
+	 * @return json of a student
+	 */
+	@RequestMapping(value = "/api/studentByUsername/{username}", method = RequestMethod.GET)
+	public @ResponseBody Student findbyUsername(@PathVariable("username") String username) {
+		return  studentRepository.findByUsername(username);
+	}
+	/**
 	 * Delete a student by it's id
 	 * @return string on successful delete
 	 */

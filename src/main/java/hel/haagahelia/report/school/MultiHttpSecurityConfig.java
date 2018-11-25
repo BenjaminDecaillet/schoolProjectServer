@@ -41,12 +41,22 @@ public class MultiHttpSecurityConfig {
 			//			.csrf().disable().cors().and().authorizeRequests().anyRequest().permitAll();
 
 			http
-			.antMatcher("/api/**").csrf().disable().cors()
-			.and().authorizeRequests()
-			.antMatchers(HttpMethod.POST, "/api/login").permitAll()
-			.anyRequest().authenticated()
+				.csrf()
+				.disable()
+				.cors()
 			.and()
-			// Filter for the api/login requests
+				.antMatcher("/api/**")                               
+				.authorizeRequests()
+				.anyRequest()
+				.authenticated()
+			.and()
+				.authorizeRequests()
+				.antMatchers(HttpMethod.POST, "/api/login")
+				.permitAll()
+				.anyRequest()
+				.authenticated()
+			.and()
+			// Filter for the login requests
 			.addFilterBefore(new LoginFilter("/api/login",
 					authenticationManager()),
 					UsernamePasswordAuthenticationFilter.class)
@@ -54,7 +64,7 @@ public class MultiHttpSecurityConfig {
 			.addFilterBefore(new AuthenticationFilter(),
 					UsernamePasswordAuthenticationFilter.class);
 		}
-		
+
 		@Bean
 		CorsConfigurationSource corsConfigurationSource() {
 			UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -70,7 +80,8 @@ public class MultiHttpSecurityConfig {
 		}
 	}
 
-	@Configuration                                              
+	@Configuration
+	@Order(2)
 	public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 		@Autowired
 		private StudentDetailServiceImpl studentDetailsService;
